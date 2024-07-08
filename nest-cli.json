@@ -1,8 +1,32 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/gocar-api/src",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/gocar-api/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/gocar-api",
+  "projects": {
+    "gocar-api": {
+      "type": "application",
+      "root": "apps/gocar-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/gocar-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gocar-api/tsconfig.app.json"
+      }
+    },
+    "gocar-batch": {
+      "type": "application",
+      "root": "apps/gocar-batch",
+      "entryFile": "main",
+      "sourceRoot": "apps/gocar-batch/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gocar-batch/tsconfig.app.json"
+      }
+    }
   }
 }
