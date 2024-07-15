@@ -80,7 +80,7 @@ export class PropertyInput {
 	@Field(() => Number)
 	propertyDrivenDistance: number;
 
-	// @IsNotEmpty()
+	@IsNotEmpty()
 	@Field(() => [String])
 	propertyImages: string[];
 
