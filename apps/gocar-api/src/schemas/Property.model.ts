@@ -51,13 +51,13 @@ const PropertySchema = new Schema(
 		propertyDomestic: {
 			type: String,
 			enum: PropertyDomestic,
-			required: true,
+			// required: true,
 		},
 
 		propertyImported: {
 			type: String,
 			enum: PropertyImported,
-			required: true,
+			// required: true,
 		},
 
 		propertyLocation: {
@@ -86,11 +86,11 @@ const PropertySchema = new Schema(
 			required: true,
 		},
 		propertyManufacturedYear: {
-			type: Date,
+			type: String,
 			required: true,
 		},
 		propertyRegistrationDate: {
-			type: Date,
+			type: String,
 			required: true,
 		},
 
