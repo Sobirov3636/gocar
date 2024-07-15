@@ -11,7 +11,7 @@ import {
 	PropertyTransmission,
 	PropertyType,
 } from '../../enums/property.enum';
-import { Member } from '../member/member';
+import { Member, TotalCounter } from '../member/member';
 
 @ObjectType()
 export class Property {
@@ -58,12 +58,12 @@ export class Property {
 	propertyModel: string;
 
 	@Field()
-	@Field(() => String)
-	propertyManufacturedYear: string;
+	@Field(() => Number)
+	propertyManufacturedYear: number;
 
 	@Field()
-	@Field(() => String)
-	propertyRegistrationDate: string;
+	@Field(() => Date)
+	propertyRegistrationDate: Date;
 
 	@Field(() => Number)
 	propertyEngineDisplacement: number;
@@ -111,4 +111,13 @@ export class Property {
 
 	@Field(() => Member, { nullable: true })
 	memberData?: Member;
+}
+
+@ObjectType()
+export class Properties {
+	@Field(() => [Property])
+	list: Property[];
+
+	@Field(() => [TotalCounter], { nullable: true })
+	metaCounter: TotalCounter[];
 }

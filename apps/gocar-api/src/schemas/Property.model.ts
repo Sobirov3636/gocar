@@ -86,11 +86,11 @@ const PropertySchema = new Schema(
 			required: true,
 		},
 		propertyManufacturedYear: {
-			type: String,
+			type: Date,
 			required: true,
 		},
 		propertyRegistrationDate: {
-			type: String,
+			type: Date,
 			required: true,
 		},
 
