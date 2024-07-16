@@ -2,7 +2,12 @@ import { BadRequestException, Injectable, InternalServerErrorException } from '@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { Properties, Property } from '../../libs/dto/property/property';
-import { DealerPropertiesInquiry, PropertiesInquiry, PropertyInput } from '../../libs/dto/property/property.input';
+import {
+	AllPropertiesInquiry,
+	DealerPropertiesInquiry,
+	PropertiesInquiry,
+	PropertyInput,
+} from '../../libs/dto/property/property.input';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import { MemberService } from '../member/member.service';
 import { ViewService } from '../view/view.service';
@@ -21,6 +26,7 @@ export class PropertyService {
 		private viewService: ViewService,
 	) {}
 
+	// CREATE PROPERTY
 	public async createProperty(input: PropertyInput): Promise<Property> {
 		try {
 			const result = await this.propertyModel.create(input);
@@ -32,6 +38,7 @@ export class PropertyService {
 		}
 	}
 
+	// GET PROPERTY
 	public async getProperty(memberId: ObjectId, propertyId: ObjectId): Promise<Property> {
 		const search: T = {
 			_id: propertyId,
@@ -54,11 +61,13 @@ export class PropertyService {
 		return targetProperty;
 	}
 
+	// PROPERTY STATS EDITOR
 	public async propertyStatsEditor(input: StatisticModifier): Promise<Property> {
 		const { _id, targetKey, modifier } = input;
 		return await this.propertyModel.findOneAndUpdate(_id, { $inc: { [targetKey]: modifier } }, { new: true }).exec();
 	}
 
+	// UPDATE PROPERTY
 	public async updateProperty(memberId: ObjectId, input: PropertyUpdate): Promise<Property> {
 		let { propertyStatus, soldAt, deletedAt } = input;
 		const search: T = {
@@ -81,6 +90,7 @@ export class PropertyService {
 		return result;
 	}
 
+	// GET PROPERTIES
 	public async getProperties(memberId: ObjectId, input: PropertiesInquiry): Promise<Properties> {
 		const match: T = { propertyStatus: PropertyStatus.ACTIVE };
 		const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
@@ -147,6 +157,7 @@ export class PropertyService {
 		}
 	}
 
+	// GET DEALER PROPERTIES
 	public async getDealerProperties(memberId: ObjectId, input: DealerPropertiesInquiry): Promise<Properties> {
 		const { propertyStatus } = input.search;
 		if (propertyStatus === PropertyStatus.DELETE) throw new BadRequestException(Message.NOT_ALLOWED_REQUEST);
@@ -174,6 +185,37 @@ export class PropertyService {
 
 		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 
+		return result[0];
+	}
+
+	/** ADMIN **/
+
+	// GET ALL PROPERTIES BY ADMIN
+	public async getAllPropertiesByAdmin(input: AllPropertiesInquiry): Promise<Properties> {
+		const { propertyStatus, propertyLocationList } = input.search;
+		const match: T = {};
+		const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
+
+		if (propertyStatus) match.propertyStatus = propertyStatus;
+		if (propertyLocationList) match.propertyLocation = { $in: propertyLocationList };
+
+		const result = await this.propertyModel.aggregate([
+			{ $match: match },
+			{ $sort: sort },
+			{
+				$facet: {
+					list: [
+						{ $skip: (input.page - 1) * input.limit },
+						{ $limit: input.limit },
+						lookupMember,
+						{ $unwind: '$memberData' },
+					],
+					metaCounter: [{ $count: 'total' }],
+				},
+			},
+		]);
+
+		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 		return result[0];
 	}
 }

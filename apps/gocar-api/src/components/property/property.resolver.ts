@@ -1,7 +1,12 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PropertyService } from './property.service';
 import { Properties, Property } from '../../libs/dto/property/property';
-import { DealerPropertiesInquiry, PropertiesInquiry, PropertyInput } from '../../libs/dto/property/property.input';
+import {
+	AllPropertiesInquiry,
+	DealerPropertiesInquiry,
+	PropertiesInquiry,
+	PropertyInput,
+} from '../../libs/dto/property/property.input';
 import { UseGuards } from '@nestjs/common';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { MemberType } from '../../libs/enums/member.enum';
@@ -15,6 +20,8 @@ import { PropertyUpdate } from '../../libs/dto/property/property.update';
 @Resolver()
 export class PropertyResolver {
 	constructor(private readonly propertyService: PropertyService) {}
+
+	// CREATE PROPERTY
 	@Roles(MemberType.DEALER)
 	@UseGuards(RolesGuard)
 	@Mutation(() => Property)
@@ -28,6 +35,7 @@ export class PropertyResolver {
 		return await this.propertyService.createProperty(input);
 	}
 
+	// GET PROPERTY
 	@UseGuards(WithoutGuard)
 	@Query(() => Property)
 	public async getProperty(
@@ -39,6 +47,7 @@ export class PropertyResolver {
 		return await this.propertyService.getProperty(memberId, propertyId);
 	}
 
+	// UPDATE PROPERTY
 	@Roles(MemberType.DEALER)
 	@UseGuards(RolesGuard)
 	@Mutation(() => Property)
@@ -51,6 +60,7 @@ export class PropertyResolver {
 		return await this.propertyService.updateProperty(memberId, input);
 	}
 
+	// GET PROPERTIES
 	@UseGuards(WithoutGuard)
 	@Query(() => Properties)
 	public async getProperties(
@@ -61,6 +71,7 @@ export class PropertyResolver {
 		return await this.propertyService.getProperties(memberId, input);
 	}
 
+	// GET DEALER PROPERTIES
 	@Roles(MemberType.DEALER)
 	@UseGuards(RolesGuard)
 	@Query(() => Properties)
@@ -70,5 +81,16 @@ export class PropertyResolver {
 	): Promise<Properties> {
 		console.log('Query: getDealerProperties');
 		return await this.propertyService.getDealerProperties(memberId, input);
+	}
+
+	/** ADMIN **/
+
+	// GET ALL PROPERTIES BY ADMIN
+	@Roles(MemberType.ADMIN)
+	@UseGuards(RolesGuard)
+	@Query(() => Properties)
+	public async getAllPropertiesByAdmin(@Args('input') input: AllPropertiesInquiry): Promise<Properties> {
+		console.log('Query: getAllPropertiesByAdmin');
+		return await this.propertyService.getAllPropertiesByAdmin(input);
 	}
 }
