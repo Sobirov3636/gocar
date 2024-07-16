@@ -82,7 +82,7 @@ export class PropertyInput {
 
 	@IsNotEmpty()
 	@Field(() => Number)
-	propertyDrivenDistanceRange: number;
+	propertyDrivenDistance: number;
 
 	@IsNotEmpty()
 	@Field(() => [String])
