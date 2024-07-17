@@ -1,9 +1,9 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { IsIn, IsNotEmpty, IsOptional, Length, Min } from 'class-validator';
 import { ObjectId } from 'mongoose';
-import { CommentGroup } from '../../libs/enums/comment.enum';
-import { availableCommentSorts } from '../../libs/config';
-import { Direction } from '../../libs/enums/common.enum';
+import { CommentGroup } from '../../enums/comment.enum';
+import { availableCommentSorts } from '../../config';
+import { Direction } from '../../enums/common.enum';
 
 @InputType()
 export class CommentInput {

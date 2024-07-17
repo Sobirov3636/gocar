@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { ObjectId } from 'mongoose';
-import { CommentGroup, CommentStatus } from '../../libs/enums/comment.enum';
-import { Member, TotalCounter } from '../../libs/dto/member/member';
+import { CommentGroup, CommentStatus } from '../../enums/comment.enum';
+import { Member, TotalCounter } from '../member/member';
 
 @ObjectType()
 export class Comment {
