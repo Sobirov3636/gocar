@@ -156,4 +156,33 @@ export class BoardArticleService {
 		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 		return result[0];
 	}
+
+	// UPDATE BOARD ARTICLES BY ADMIN
+	public async updateBoardArticleByAdmin(input: BoardArticleUpdate): Promise<BoardArticle> {
+		let { _id, articleStatus } = input;
+		const search: T = {
+			_id: _id,
+			articleStatus: BoardArticleStatus.ACTIVE,
+		};
+
+		const result = await this.boardArticleModel.findOneAndUpdate(search, input, { new: true }).exec();
+		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
+		if (articleStatus === BoardArticleStatus.DELETE) {
+			await this.memberService.memberStatsEditor({
+				_id: result.memberId,
+				targetKey: 'memberArticles',
+				modifier: -1,
+			});
+		}
+		return result;
+	}
+
+	// DELETE BOARD ARTICLES BY ADMIN
+	public async removeBoardArticleByAdmin(articleId: ObjectId): Promise<BoardArticle> {
+		const search: T = { _id: articleId, articleStatus: BoardArticleStatus.DELETE };
+		const result = await this.boardArticleModel.findOneAndDelete(search).exec();
+		if (!result) throw new InternalServerErrorException(Message.REMOVE_FAILED);
+
+		return result;
+	}
 }
