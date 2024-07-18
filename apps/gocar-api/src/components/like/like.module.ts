@@ -13,5 +13,6 @@ import LikeSchema from '../../schemas/Like.model';
 		]),
 	],
 	providers: [LikeService],
+	exports: [LikeService],
 })
 export class LikeModule {}
