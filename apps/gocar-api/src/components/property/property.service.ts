@@ -147,10 +147,10 @@ export class PropertyService {
 			text,
 		} = input.search;
 		if (memberId) match.memberId = shapeIntoMongoObjectId(memberId);
-		if (locationList) match.propertyLocation = { $in: locationList };
-		if (fuelList) match.propertyFuel = { $in: fuelList };
-		if (typeList) match.propertyType = { $in: typeList };
-		if (transmissionList) match.propertyTransmission = { $in: transmissionList };
+		if (locationList && locationList.length) match.propertyLocation = { $in: locationList };
+		if (fuelList && fuelList.length) match.propertyFuel = { $in: fuelList };
+		if (typeList && typeList.length) match.propertyType = { $in: typeList };
+		if (transmissionList && transmissionList.length) match.propertyTransmission = { $in: transmissionList };
 		if (manufacture) match.propertyManufacture = manufacture;
 
 		if (pricesRange) match.propertyPrice = { $gte: pricesRange.start, $lte: pricesRange.end };
