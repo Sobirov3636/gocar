@@ -160,7 +160,7 @@ export class PropertyService {
 			match.propertyDrivenDistance = { $gte: drivenDistanceRange.start, $lte: drivenDistanceRange.end };
 
 		if (text) match.propertyTitle = { $regex: new RegExp(text, 'i') };
-		if (options) {
+		if (options && options.length) {
 			match['$or'] = options.map((ele) => {
 				return { [ele]: true };
 			});
