@@ -89,15 +89,6 @@ const PropertySchema = new Schema(
 			type: Date,
 			required: true,
 		},
-		propertyRegistrationDate: {
-			type: Date,
-			required: true,
-		},
-
-		propertyEngineDisplacement: {
-			type: Number,
-			required: true,
-		},
 
 		propertyDrivenDistance: {
 			type: Number,

@@ -58,16 +58,8 @@ export class Property {
 	@Field(() => String)
 	propertyModel: string;
 
-	@Field()
 	@Field(() => Number)
 	propertyManufacturedYear: number;
-
-	@Field()
-	@Field(() => Date)
-	propertyRegistrationDate: Date;
-
-	@Field(() => Number)
-	propertyEngineDisplacement: number;
 
 	@Field(() => Number)
 	propertyDrivenDistance: number;

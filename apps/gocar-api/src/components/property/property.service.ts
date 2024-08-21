@@ -143,7 +143,7 @@ export class PropertyService {
 			drivenDistanceRange,
 			options,
 			transmissionList,
-			manufacture,
+			manufactureList,
 			text,
 		} = input.search;
 		if (memberId) match.memberId = shapeIntoMongoObjectId(memberId);
@@ -151,8 +151,7 @@ export class PropertyService {
 		if (fuelList && fuelList.length) match.propertyFuel = { $in: fuelList };
 		if (typeList && typeList.length) match.propertyType = { $in: typeList };
 		if (transmissionList && transmissionList.length) match.propertyTransmission = { $in: transmissionList };
-		if (manufacture) match.propertyManufacture = manufacture;
-
+		if (manufactureList && manufactureList.length) match.propertyManufacture = { $in: manufactureList };
 		if (pricesRange) match.propertyPrice = { $gte: pricesRange.start, $lte: pricesRange.end };
 		if (manufacturedYearRange)
 			match.propertyManufacturedYear = { $gte: manufacturedYearRange.start, $lte: manufacturedYearRange.end };

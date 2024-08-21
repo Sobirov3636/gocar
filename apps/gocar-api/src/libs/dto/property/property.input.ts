@@ -73,14 +73,6 @@ export class PropertyInput {
 	propertyManufacturedYear: number;
 
 	@IsNotEmpty()
-	@Field(() => Date)
-	propertyRegistrationDate: Date;
-
-	@IsNotEmpty()
-	@Field(() => Number)
-	propertyEngineDisplacement: number;
-
-	@IsNotEmpty()
 	@Field(() => Number)
 	propertyDrivenDistance: number;
 
@@ -156,8 +148,8 @@ class PISearch {
 	options?: PropertyOptions[];
 
 	@IsOptional()
-	@Field(() => PropertyManufacture, { nullable: true })
-	manufacture?: PropertyManufacture;
+	@Field(() => [PropertyManufacture], { nullable: true })
+	manufactureList?: [PropertyManufacture];
 
 	@IsOptional()
 	@Field(() => PricesRange, { nullable: true })
@@ -204,7 +196,7 @@ export class PropertiesInquiry {
 
 /** DEALER PROPERTIES INQUIRY **/
 @InputType()
-class APISearch {
+class DPISearch {
 	@IsOptional()
 	@Field(() => PropertyStatus, { nullable: true })
 	propertyStatus?: PropertyStatus;
@@ -232,8 +224,8 @@ export class DealerPropertiesInquiry {
 	direction?: Direction;
 
 	@IsNotEmpty()
-	@Field(() => APISearch)
-	search: APISearch;
+	@Field(() => DPISearch)
+	search: DPISearch;
 }
 
 // ################## //

@@ -4,6 +4,7 @@ import { MemberAuthType, MemberStatus, MemberType } from '../../enums/member.enu
 import { ObjectId } from 'mongoose';
 import {
 	PropertyDomestic,
+	PropertyFuel,
 	PropertyImported,
 	PropertyLocation,
 	PropertyManufacture,
@@ -22,6 +23,10 @@ export class PropertyUpdate {
 	@IsOptional()
 	@Field(() => PropertyType, { nullable: true })
 	propertyType?: PropertyType;
+
+	@IsOptional()
+	@Field(() => PropertyFuel, { nullable: true })
+	propertyFuel?: PropertyFuel;
 
 	@IsOptional()
 	@Field(() => PropertyStatus, { nullable: true })
@@ -70,16 +75,12 @@ export class PropertyUpdate {
 	propertyModel?: string;
 
 	@IsOptional()
-	@Field(() => String, { nullable: true })
-	propertyManufacturedYear?: string;
-
-	@IsOptional()
-	@Field(() => String, { nullable: true })
-	propertyRegistrationDate?: string;
+	@Field(() => Number, { nullable: true })
+	propertyManufacturedYear?: number;
 
 	@IsOptional()
 	@Field(() => Number, { nullable: true })
-	propertyEngineDisplacement?: number;
+	propertyDrivenDistance?: number;
 
 	@IsOptional()
 	@Field(() => [String], { nullable: true })
