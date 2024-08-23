@@ -7,19 +7,18 @@ import { ViewModule } from '../view/view.module';
 import { MemberModule } from '../member/member.module';
 import BoardArticleSchema from '../../schemas/BoardArticle.model';
 import { LikeModule } from '../like/like.module';
+import { NotificationModule } from '../notification/notification.module';
+import MemberSchema from '../../schemas/Member.model';
 
 @Module({
 	imports: [
-		MongooseModule.forFeature([
-			{
-				name: 'BoardArticle',
-				schema: BoardArticleSchema,
-			},
-		]),
+		MongooseModule.forFeature([{ name: 'BoardArticle', schema: BoardArticleSchema }]),
+		MongooseModule.forFeature([{ name: 'Member', schema: MemberSchema }]),
 		AuthModule,
 		ViewModule,
 		MemberModule,
 		LikeModule,
+		NotificationModule,
 	],
 	providers: [BoardArticleResolver, BoardArticleService],
 	exports: [BoardArticleService],
