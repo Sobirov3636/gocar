@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+  gocar-api:
+    container_name: gocar-api
+    restart: always
+    image: node:20.10.0
+    ports:
+      - 4001:3005
+    volumes:
+      - ./:/usr/src/gocar
+    working_dir: /usr/src/gocar
+
+    networks:
+      - monorepo-network
+
+    # FOR PRODUCTION
+    command: bash -c "npm install && npm run build && npm run start:prod"
+
+  gocar-batch:
+    container_name: gocar-batch
+    restart: unless-stopped
+    image: node:20.10.0
+    ports:
+      - 4002:3006
+    volumes:
+      - ./:/usr/src/gocar
+    working_dir: /usr/src/gocar
+
+    networks:
+      - monorepo-network
+
+    # FOR PRODUCTION
+    command: bash -c "npm install && npm run build && npm run start:prod:batch"
+
+networks:
+  monorepo-network:
+    driver: bridge
+# gocar-next:   localhost:4000 <=> container:3000
+# gocar-api:   localhost:4001 <=> container:3005
+# gocar-batch:   localhost:4002 <=> container:3006
